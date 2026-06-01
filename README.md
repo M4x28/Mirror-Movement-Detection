@@ -1,6 +1,8 @@
 # Mirror Movement Detection
 
-![Patient-level dispersion overview](doc/figures/sprint_05/dispersion_scatter_overlay.png)
+<video src="doc/demo/MM_demo.mp4" controls width="100%"></video>
+
+[Open the demo video](doc/demo/MM_demo.mp4)
 
 ## Overview
 
