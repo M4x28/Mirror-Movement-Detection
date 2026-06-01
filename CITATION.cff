@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, data, figures, or documentation, please cite this repository."
+title: "Mirror Movement Detection"
+authors:
+  - family-names: "Birardi"
+    given-names: "Leonardo"
+repository-code: "https://github.com/M4x28/Mirror-Movement-Detection"
+abstract: "Explainable decision-support pipeline for detecting candidate Mirror Movements in bilateral wrist accelerometer recordings from the Box and Blocks Test."
+keywords:
+  - mirror movements
+  - accelerometer
+  - explainable AI
+  - clinical decision support
+  - Box and Blocks Test
+license: "Apache-2.0"
+date-released: "2026-06-01"

@@ -6,40 +6,11 @@
 
 ## Overview
 
-This repository contains the final explainable decision-support pipeline for detecting candidate Mirror Movements (MM) in bilateral wrist accelerometer recordings collected during the Box and Blocks Test (BBT).
+This repository contains a decision-support pipeline for detecting candidate Mirror Movements (MM) in bilateral wrist accelerometer recordings collected during the Box and Blocks Test (BBT).
 
 The package analyzes one patient at a time. It does not implement a UCP-vs-TD classifier as its final output. Instead, it highlights short windows compatible with MM and attaches event-level explanations based on clinically interpretable signal features.
 
-The workflow is designed for technical review and clinical validation: detections are candidate events, not standalone diagnoses.
-
-## Repository Scope
-
-This GitHub release contains the pipeline files directly at repository root. The anonymized data required by the demos is included under `data/`; earlier modeling experiments are not part of this release.
-
-Recommended local layout:
-
-```text
-digitalHealth/
-  README.md
-  config.py
-  artifact/
-  data_io/
-  detectors/
-  doc/
-  eda/
-  explain/
-  features/
-  preprocessing/
-  webapp/
-  data/
-    UpdatedData/
-      ucp/bbt_ucp_raw_anon.csv
-      td/bbt_td_raw_anon.csv
-    upload_examples/
-      ucp5_webapp_upload.csv
-```
-
-Runtime commands should be executed from the repository root.
+**The workflow is designed for technical review and clinical validation: detections are candidate events, not standalone diagnoses.**
 
 ## Features
 
@@ -57,18 +28,16 @@ Runtime commands should be executed from the repository root.
 
 ## Tech Stack
 
-- **Python:** Core implementation language.
-- **NumPy:** Numerical array operations.
-- **Pandas:** CSV loading, validation, and tabular feature processing.
-- **SciPy:** Butterworth filtering, zero-phase filtering, and signal utilities.
-- **scikit-learn:** Isolation Forest, PCA reconstruction, robust preprocessing utilities, and evaluation helpers.
-- **Matplotlib:** Static sprint figures.
-- **Plotly:** Interactive webapp charts.
-- **Streamlit:** Single-patient decision-support interface.
+- **Python**
+- **NumPy**
+- **Pandas**
+- **SciPy**
+- **scikit-learn**
+- **Matplotlib**
+- **Plotly**
+- **Streamlit**
 
 ## Sources and Data
-
-No external API is required by the explainable pipeline.
 
 The anonymized dataset is included in `data/`. By default, `config.py` resolves data paths relative to the repository root:
 
@@ -157,21 +126,13 @@ AND not is_boundary
 
 Where:
 
-| Field             | Description                                                                                             |
-| ----------------- | ------------------------------------------------------------------------------------------------------- |
-| `score_median`    | Median score from the robust quantile, Isolation Forest, and PCA reconstruction detectors               |
-| `asymmetry_index` | Signed energy asymmetry between active and still hand                                                   |
-| `xcorr_max`       | Maximum bilateral cross-correlation within the configured lag range                                     |
-| `is_artifact`     | Gross movement flag used as an exclusion mask                                                           |
-| `is_boundary`     | First and last 3 seconds of each session, excluded because of BBT setup/cleanup and filter edge effects |
-
-The selected cutoffs were chosen by grid ablation on the available cohort:
-
-```text
-sensitivity UCP = 82.4%
-specificity TD = 89.3%
-Youden J = 0.716
-```
+| Field             | Description                                                                               |
+| ----------------- | ----------------------------------------------------------------------------------------- |
+| `score_median`    | Median score from the robust quantile, Isolation Forest, and PCA reconstruction detectors |
+| `asymmetry_index` | Signed energy asymmetry between active and still hand                                     |
+| `xcorr_max`       | Maximum bilateral cross-correlation within the configured lag range                       |
+| `is_artifact`     | Gross movement flag used as an exclusion mask                                             |
+| `is_boundary`     | First and last 3 seconds of each session, excluded because of noise.                      |
 
 ## Patient-Level Dispersion Indicator
 
@@ -184,15 +145,6 @@ dispersion_ratio = dispersion_ndom / dispersion_dom
 This value is displayed in the webapp as secondary patient-level evidence. It is not a hard filter in the window-level MM rule.
 
 ## Getting Started
-
-The commands below assume the layout described in `Repository Scope` and are executed from the repository root.
-
-### Prerequisites
-
-- Python 3.10 or newer.
-- Access to the anonymized BBT CSV files listed in `Sources and Data`.
-- A shell running from the repository root.
-
 ### Installation
 
 Create and activate a virtual environment from the repository root:
@@ -284,42 +236,52 @@ doc/figures/
 | `detectors/`     | Robust quantile, Isolation Forest, PCA reconstruction, median ensemble, and MM rule              |
 | `explain/`       | Feature glossary and event-level clinical explanations                                           |
 | `eda/`           | Reproducible scripts for figures, ablations, and CSV summaries                                   |
-| `webapp/`        | Streamlit single-patient decision-support app                                                    |
+| `webapp/`        | Streamlit WebApp                                                                                 |
 | `doc/`           | Sprint documentation, figures, CSV outputs, and final report                                     |
 
 ## Documentation and Outputs
 
-| File                                              | Content                                                 |
-| ------------------------------------------------- | ------------------------------------------------------- |
-| `doc/final_report.md`                             | Final technical report for the explainable pipeline     |
-| `doc/sprint_00_setup_eda.md`                      | Raw-signal inspection and setup notes                   |
-| `doc/sprint_01_preprocessing.md`                  | Gravity removal, filtering, and preprocessing rationale |
-| `doc/sprint_02_artifact_baseline.md`              | Artifact filtering design and ablation                  |
-| `doc/sprint_03_features.md`                       | Feature engineering and statistical evidence            |
-| `doc/sprint_04_detectors.md`                      | Detector design and ensemble scoring                    |
-| `doc/sprint_05_ablation.md`                       | MM-rule threshold ablation                              |
-| `doc/sprint_05b_scatter_dispersion.md`            | Patient-level dispersion indicator                      |
-| `doc/sprint_06_webapp.md`                         | Streamlit webapp implementation notes                   |
-| `doc/figures/sprint_04/summary_mm.csv`            | Per-session MM-candidate summary                        |
-| `doc/figures/sprint_05/ablation/grid_results.csv` | Composite-rule cutoff ablation                          |
-| `doc/figures/sprint_05/scatter_dispersion.csv`    | Patient-level dispersion values                         |
+- [Final Report](doc/final_report.md)
+- [Sprint 0: Setup and Exploratory Data Analysis](doc/sprint_00_setup_eda.md)
+- [Sprint 1: Preprocessing](doc/sprint_01_preprocessing.md)
+- [Sprint 2: Artifact Baseline](doc/sprint_02_artifact_baseline.md)
+- [Sprint 3: Feature Engineering](doc/sprint_03_features.md)
+- [Sprint 4: Detector Design](doc/sprint_04_detectors.md)
+- [Sprint 5: Rule Ablation](doc/sprint_05_ablation.md)
+- [Sprint 5b: Scatter Dispersion](doc/sprint_05b_scatter_dispersion.md)
+- [Sprint 6: Web App](doc/sprint_06_webapp.md)
+- [MM Candidate Summary](doc/figures/sprint_04/summary_mm.csv)
+- [Rule Ablation Grid Results](doc/figures/sprint_05/ablation/grid_results.csv)
+- [Scatter Dispersion Values](doc/figures/sprint_05/scatter_dispersion.csv)
 
 ## Other Experiments
 
 The full research workspace also contained earlier experiments outside this release. They are not part of this GitHub branch, but they document the research path that led to the current design.
 
-| Area                            | Description                                                                                                                 |
-| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Classical ML                    | Supervised UCP-vs-TD experiments on engineered features, including selected-feature variants and raw/preprocessed pipelines |
-| Split generation                | Patient-level K-fold and leave-one-out split generation used to avoid subject leakage                                       |
-| 1D deep learning                | ENMO-based CNN experiments: shared-weight two-branch CNN, independent-branch CNN, and CNN-LSTM cascade                      |
-| Spectrogram deep learning       | STFT and EfficientNet experiments using dual-branch, signed-delta, and RGB-like spectrogram inputs                          |
-| SimCLR and transfer experiments | Representation-learning and fine-tuning experiments evaluated against the supervised baselines                              |
+| Area                      | Description                                                                                                                 |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Classical ML              | Supervised UCP-vs-TD experiments on engineered features, including selected-feature variants and raw/preprocessed pipelines |
+| Split generation          | Patient-level K-fold and leave-one-out split generation used to avoid subject leakage                                       |
+| 1D deep learning          | ENMO-based CNN experiments: shared-weight two-branch CNN, independent-branch CNN, and CNN-LSTM cascade                      |
+| Spectrogram deep learning | STFT and EfficientNet experiments using dual-branch, signed-delta, and RGB-like spectrogram inputs                          |
+
 
 ## Issues and Known Constraints
 
 - The final rule is calibrated on the available anonymized cohort and should be revalidated before use on a different acquisition protocol.
-- The first and last 3 seconds of each session are excluded from MM-candidate decisions because of setup/cleanup transients and filter edge effects.
-- A 60 s BBT recording may not contain visible MM events for every UCP patient.
+- The first and last 3 seconds of each session are excluded from MM-candidate decisions because of setup noise.
+- A 60s BBT recording may not contain visible MM events for every UCP patient.
 - TD sessions can contain gross movement artifacts, so the pipeline uses intra-patient baselines instead of a TD-trained anomaly baseline.
-- Upload mode accepts one patient id per CSV.
+
+## License, Citation, and Issue Reporting
+
+This project uses a dual-license structure:
+
+- **Code:** licensed under the [Apache License 2.0](LICENSE).
+- **Documentation, reports, figures, and plots:** licensed under [Creative Commons Attribution 4.0 International](LICENSE-DOCS).
+
+Included anonymized data files are provided to support reproducibility of this project. Do not attempt to re-identify individuals, and preserve attribution to the original repository and authors when using derived results.
+
+When using, modifying, redistributing, or building upon this project, preserve the attribution notice in [NOTICE](NOTICE). Academic and derivative use should cite the repository using [CITATION.cff](CITATION.cff).
+
+Issues, bugs, documentation problems, and reproducibility questions should be reported through GitHub Issues. A useful report should include a short description, the steps needed to reproduce the problem, the expected and observed behavior, the Python version, the operating system, and any relevant traceback or screenshot. Do not include sensitive or non-anonymized clinical data in public issues.

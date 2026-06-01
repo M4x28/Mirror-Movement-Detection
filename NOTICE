@@ -1,0 +1,9 @@
+Mirror Movement Detection
+Copyright 2026 Leonardo Birardi
+
+This repository contains an explainable decision-support pipeline for detecting
+candidate Mirror Movements in bilateral wrist accelerometer recordings from the
+Box and Blocks Test.
+
+If you use, modify, redistribute, or build upon this project, preserve this
+notice and cite the original repository and author.
