@@ -1,8 +1,8 @@
 # Mirror Movement Detection
 
-<video src="doc/demo/MM_demo.mp4" controls width="100%"></video>
+![Mirror Movement Detection demo](doc/demo/MM_demo.gif)
 
-[Open the demo video](doc/demo/MM_demo.mp4)
+[Open the MP4 demo video](doc/demo/MM_demo.mp4)
 
 ## Overview
 
